@@ -22,12 +22,12 @@ CNS_BINARIES = {
 cpp_extensions = [
     Extension(
         "haddock.bin.contact_fcc",
-        sources=["src/haddock/deps/contact_fcc.cpp"],
+        sources=["deps/contact_fcc.cpp"],
         extra_compile_args=["-O2"],
     ),
     Extension(
         "haddock.bin.fast_rmsdmatrix",
-        sources=["src/haddock/deps/fast-rmsdmatrix.c"],
+        sources=["deps/fast-rmsdmatrix.c"],
         extra_compile_args=["-Wall", "-O3", "-march=native", "-std=c99"],
         extra_link_args=["-lm"],
     ),
@@ -42,7 +42,7 @@ class CustomBuild(build_ext):
         print("Building HADDOCK3 C/C++ binary dependencies...")
         self.build_executable(
             name="contact_fcc",
-            cmd=["g++", "-O2", "-o", "contact_fcc", "src/haddock/deps/contact_fcc.cpp"],
+            cmd=["g++", "-O2", "-o", "contact_fcc", "deps/contact_fcc.cpp"],
         )
         self.build_executable(
             name="fast-rmsdmatrix",
@@ -54,7 +54,7 @@ class CustomBuild(build_ext):
                 "-std=c99",
                 "-o",
                 "fast-rmsdmatrix",
-                "src/haddock/deps/fast-rmsdmatrix.c",
+                "deps/fast-rmsdmatrix.c",
                 "-lm",
             ],
         )
@@ -69,7 +69,7 @@ class CustomBuild(build_ext):
         try:
             subprocess.check_call(cmd)
             # Ensure the source bin directory exists
-            src_bin_dir = Path("src", "haddock", "bin")
+            src_bin_dir = Path("bin")
             src_bin_dir.mkdir(exist_ok=True, parents=True)
 
             # Move the built executable to the source bin directory
@@ -100,12 +100,14 @@ class CustomBuild(build_ext):
             sys.exit(1)
 
         cns_binary_url = CNS_BINARIES[arch]
+        print(cns_binary_url)
 
-        src_bin_dir = Path("src", "haddock", "bin")
+        src_bin_dir = Path("bin")
         src_bin_dir.mkdir(exist_ok=True, parents=True)
 
         cns_exec = Path(src_bin_dir, "cns")
         status, msg = self.download_file(cns_binary_url, cns_exec)
+        print("message: " + msg)
         if not status:
             print(msg)
             sys.exit(1)
@@ -114,15 +116,16 @@ class CustomBuild(build_ext):
         os.chmod(cns_exec, 0o755)
 
         # If build_lib exists, also copy to there
-        if hasattr(self, "build_lib"):
-            install_bin_dir = Path(self.build_lib, "haddock", "bin")
-            install_bin_dir.mkdir(exist_ok=True, parents=True)
-            self.copy_file(cns_exec, Path(install_bin_dir, "cns"))
+        # if hasattr(self, "build_lib"):
+        #     install_bin_dir = Path(self.build_lib, "haddock", "bin")
+        #     install_bin_dir.mkdir(exist_ok=True, parents=True)
+        #     self.copy_file(cns_exec, Path(install_bin_dir, "cns"))
 
     @staticmethod
     def download_file(url, dest) -> tuple[bool, str]:
         """Download a file from a URL"""
         try:
+            print(dest)
             urllib.request.urlretrieve(url, dest)
             return True, "Download successful"
         except Exception as e:  # pylint: disable=broad-except
