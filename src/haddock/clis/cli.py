@@ -13,8 +13,10 @@ Usage::
     haddock3 <CONFIG FILE>
 """
 import argparse
-import sys
+import os, sys
 from pathlib import Path
+import shutil
+from glob import glob
 
 from haddock import log
 from haddock.core.defaults import RUNDIR
@@ -31,6 +33,7 @@ from haddock.gear.restart_run import add_restart_arg
 from haddock.libs.libcli import add_version_arg, arg_file_exist
 from haddock.libs.liblog import add_loglevel_arg
 
+import pandas as pd
 
 # Command line interface parser
 ap = argparse.ArgumentParser()
@@ -77,6 +80,22 @@ def maincli() -> None:
     """Execute main client."""
     cli(ap, main)
 
+def clean_outputs(data_dir) -> None:
+    """Compresses output files and saves caprieval stats to CSV. """
+
+    tsv_files = [file for path, subdir, files in os.walk(Path("./", data_dir, "analysis")) for file in glob(os.path.join(path, "*_ss.tsv"))]
+    tsv_list = []
+    
+    for f in tsv_files:
+        tsv_f = pd.read_csv(f, sep='\t')
+        tsv_f['model'] = [os.path.basename(stage) for stage in tsv_f['model']]
+        tsv_list += [tsv_f]
+    
+    files_dir = str(data_dir) + "-files"
+    tsv_df = pd.concat(tsv_list)
+    tsv_df.to_csv(Path(files_dir, "caprieval_stats.csv"))
+    shutil.make_archive(Path(files_dir, os.path.basename(data_dir)), 'zip', data_dir)
+    shutil.rmtree(data_dir)
 
 def main(
     workflow: FilePath,
@@ -202,8 +221,8 @@ def main(
     elapsed = convert_seconds_to_min_sec(end - start)
     log.info(f"This HADDOCK3 run took: {elapsed}")
     gen_feedback_messages(log.info)
+    clean_outputs(other_params['run_dir'])
     log.info(get_adieu())
-
 
 if __name__ == "__main__":
     sys.exit(maincli())  # type: ignore
