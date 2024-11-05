@@ -7,31 +7,6 @@ name = "haddock3"
 version = "1.0"
 description = "HADDOCK3"
 readme = "README.md"
-authors = [{ name = "BonvinLab", email = "bonvinlab.support@uu.nl" }]
-license = { text = "Apache License 2.0" }
-classifiers = [
-  "Development Status :: 4 - Beta",
-  "License :: OSI Approved :: Apache Software License",
-  "Natural Language :: English",
-  "Operating System :: POSIX",
-  "Operating System :: POSIX :: Linux",
-  "Operating System :: MacOS",
-  "Intended Audience :: Science/Research",
-  "Topic :: Scientific/Engineering :: Bio-Informatics",
-  "Topic :: Scientific/Engineering :: Chemistry",
-  "Topic :: Scientific/Engineering :: Physics",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-]
-keywords = [
-  "Structural Biology",
-  "Biochemistry",
-  "Docking",
-  "Protein docking",
-  "Proteins",
-]
 requires-python = ">=3.9, <3.13"
 dependencies = [
   'pdb-tools>=2.5.0',
