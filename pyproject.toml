@@ -68,7 +68,7 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/haddocking/haddock3"
+Homepage = "https://github.com/eitm-org/haddock3"
 Documentation = "https://github.com/haddocking/haddock3#readme"
 "Issue Tracker" = "https://github.com/haddocking/haddock3/issues"
 "Discussion Forum" = "https://github.com/haddocking/haddock3/issues"
