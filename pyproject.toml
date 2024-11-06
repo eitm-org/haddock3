@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "haddock3"
-version = "2024.10.0b6"
+dynamic = ["version"]
 description = "HADDOCK3"
 readme = "README.md"
 requires-python = ">=3.9, <3.13"
