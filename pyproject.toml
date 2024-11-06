@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "haddock3"
-version = "0.1.0"
+version = "2024.10.0b6"
 description = "HADDOCK3"
 readme = "README.md"
 requires-python = ">=3.9, <3.13"
@@ -12,7 +12,7 @@ dependencies = [
   'pdb-tools>=2.5.0',
   'biopython==1.*',
   'jsonpickle>=2.1.0',
-  'numpy==2.*',
+  'numpy==1.*',
   'pyyaml>=6.0',
   'scipy>=1.10.0',
   'toml>=0.10.2',
@@ -43,7 +43,7 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/eitm-org/haddock3"
+Homepage = "https://github.com/haddock3/haddock3"
 Documentation = "https://github.com/haddocking/haddock3#readme"
 "Issue Tracker" = "https://github.com/haddocking/haddock3/issues"
 "Discussion Forum" = "https://github.com/haddocking/haddock3/issues"
