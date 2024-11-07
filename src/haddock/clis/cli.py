@@ -100,6 +100,7 @@ def clean_outputs(data_dir) -> None:
     os.mkdir(Path(files_dir, "pdbs"))
     for p in pdb_list:
         shutil.copy(p, Path(files_dir, "pdbs"))
+        print(p)
         
     shutil.make_archive(Path(files_dir, os.path.basename(data_dir)), 'zip', data_dir)
     shutil.rmtree(data_dir)
