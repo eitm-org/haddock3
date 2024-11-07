@@ -85,15 +85,22 @@ def clean_outputs(data_dir) -> None:
 
     tsv_files = [file for path, subdir, files in os.walk(Path("./", data_dir, "analysis")) for file in glob(os.path.join(path, "*_ss.tsv"))]
     tsv_list = []
+    pdb_list = []
     
     for f in tsv_files:
         tsv_f = pd.read_csv(f, sep='\t')
+        pdb_list += tsv_f['model'][0:5]
         tsv_f['model'] = [os.path.basename(stage) for stage in tsv_f['model']]
         tsv_list += [tsv_f]
-    
+
     files_dir = str(data_dir) + "-files"
     tsv_df = pd.concat(tsv_list)
     tsv_df.to_csv(Path(files_dir, "caprieval_stats.csv"))
+
+    os.mkdir(Path(files_dir, "pdbs"))
+    for p in pdb_list:
+        shutil.copy(p, Path(files_dir, "pdbs"))
+        
     shutil.make_archive(Path(files_dir, os.path.basename(data_dir)), 'zip', data_dir)
     shutil.rmtree(data_dir)
 
